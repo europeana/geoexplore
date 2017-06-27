@@ -1,6 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'europeana/api'
+Europeana::API.key = ENV['EUROPEANA_API_KEY']
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
