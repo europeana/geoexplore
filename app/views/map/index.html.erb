@@ -1,5 +1,22 @@
 <div class="map-heading">Europeana Geoexplore!</div>
 <div class="map-wrapper">
-  <%= map( center: { latlng: [51.52238797921441, -0.08366235665359283], :zoom => 4 },
-          markers: @markers) %>
+  <div id="map" class="leaflet-container leaflet-fade-anim leaflet-grab leaflet-touch-drag"></div>
+  <script>
+    var tiles = L.tileLayer('<%= "https://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=#{ENV['LEAFLET_ACCESS_TOKEN']}" %>', {
+      attribution: 'Europeana Geoexplore',
+      maxZoom: 18,
+    });
+
+    var map = L.map('map', {center: [20, -10], zoom: 2, layers: [tiles]});
+
+    var markers = L.markerClusterGroup();
+
+    <% @markers.each do |marker| %>
+    marker = L.marker(<%= marker[:latlng] %>, { title: '<%= marker[:id] %>' });
+    marker.bindPopup('<%= marker[:id] %>');
+    markers.addLayer(marker);
+    <% end %>
+
+    map.addLayer(markers);
+  </script>
 </div>
